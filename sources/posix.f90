@@ -1,5 +1,12 @@
 module posix
+  use iso_c_binding
+
   implicit none
+
+  !! FIXME: Not quite portable.
+  type(c_ptr), bind(c, name="__stderrp") :: posix_stderr
+  type(c_ptr), bind(c, name="__stdinp") :: posix_stdin
+  type(c_ptr), bind(c, name="__stdoutp") :: posix_stdout
 
   interface
      subroutine posix_free(cptr) &
