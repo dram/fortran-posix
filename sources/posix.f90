@@ -47,6 +47,22 @@ module posix
        type(c_ptr), value :: cptr
      end subroutine posix_free
 
+     function posix_fseek(stream, offset, whence) result(res) &
+          bind(c, name="fseek")
+       use iso_c_binding, only: c_int, c_long, c_ptr
+       type(c_ptr), value :: stream
+       integer(c_long), value :: offset
+       integer(c_int), value :: whence
+       integer(c_int) :: res
+     end function posix_fseek
+
+     function posix_ftell(stream) result(res) &
+          bind(c, name="ftell")
+       use iso_c_binding, only: c_long, c_ptr
+       type(c_ptr), value :: stream
+       integer(c_long) :: res
+     end function posix_ftell
+
      function posix_malloc(size) result(cptr) &
           bind(c, name="malloc")
        use iso_c_binding, only: c_size_t, c_ptr
@@ -67,6 +83,12 @@ module posix
        use iso_c_binding, only: c_char
        character(kind=c_char), intent(in) :: string (*)
      end subroutine posix_perror
+
+     subroutine posix_rewind(stream) &
+          bind(c, name="rewind")
+       use iso_c_binding, only: c_ptr
+       type(c_ptr), value :: stream
+     end subroutine posix_rewind
 
      function posix_rmdir(path) result(res) &
           bind(c, name="rmdir")
