@@ -97,6 +97,13 @@ module posix
        integer(c_int) :: posix_rmdir
      end function posix_rmdir
 
+     function posix_strlen(s) &
+          bind(c, name="strlen")
+       use iso_c_binding, only: c_size_t, c_ptr
+       type(c_ptr), value :: s
+       integer(c_size_t) :: posix_strlen
+     end function posix_strlen
+
      function posix_unlink(path) &
           bind(c, name="unlink")
        use iso_c_binding, only: c_char, c_int

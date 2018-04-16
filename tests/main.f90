@@ -38,11 +38,15 @@ program main
     print *, "posix_unlink", res
 
     if (posix_mkdir("Makefile" // c_null_char, int(o'700')) == -1) then
-       call posix_perror("mkdir: ")
+       call posix_perror("mkdir: " // char(0))
     end if
 
     buf = "message" // achar(10)
-
     size_res = posix_write(2, c_loc(buf), 8_c_size_t)
+    print *, "posix_write", size_res
+
+    buf = "message" // achar(10) // char(0)
+    size_res = posix_strlen(c_loc(buf))
+    print *, "posix_strlen", size_res
   end block
 end program main
