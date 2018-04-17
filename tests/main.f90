@@ -6,47 +6,50 @@ program main
   block
     use posix
 
-    type(c_ptr) :: cptr
+    character(:), allocatable, target :: name, message, mode
     integer(c_int) :: res
     integer(c_long) :: long_res
     integer(c_size_t) :: size_res
-    character(132), target :: buf
+    type(c_ptr) :: cptr
 
     cptr = posix_malloc(10_c_size_t)
     call posix_free(cptr)
 
-    res = posix_access("Makefile" // c_null_char, posix_f_ok)
-    print *, "posix_access", res
-
-    res = posix_mkdir("foo" // c_null_char, int(o'700'))
+    name = "foo" // c_null_char
+    res = posix_mkdir(c_loc(name), int(o"700"))
     print *, "posix_mkdir", res
-
-    res = posix_rmdir("foo" // c_null_char)
+    res = posix_rmdir(c_loc(name))
     print *, "posix_rmdir", res
 
-    cptr = posix_fopen("Makefile" // c_null_char, "r" // c_null_char)
+    name = "Makefile" // c_null_char
+    res = posix_access(c_loc(name), posix_f_ok)
+    print *, "posix_access", res
 
+    mode = "r" // c_null_char
+    cptr = posix_fopen(c_loc(name), c_loc(mode))
     res = posix_fseek(cptr, 0_c_long, posix_seek_end)
     long_res = posix_ftell(cptr)
     print *, "posix_ftell", long_res
-    call posix_rewind(cptr)
 
+    call posix_rewind(cptr)
     res = posix_fclose(cptr)
     print *, "posix_fclose", res
 
-    res = posix_unlink("foo.txt" // c_null_char)
-    print *, "posix_unlink", res
-
-    if (posix_mkdir("Makefile" // c_null_char, int(o'700')) == -1) then
-       call posix_perror("mkdir: " // char(0))
+    if (posix_mkdir(c_loc(name), int(o"700")) == -1) then
+       message = "mkdir: " // char(0)
+       call posix_perror(c_loc(message))
     end if
 
-    buf = "message" // achar(10)
-    size_res = posix_write(2, c_loc(buf), 8_c_size_t)
+    name = "foo.txt" // c_null_char
+    res = posix_unlink(c_loc(name))
+    print *, "posix_unlink", res
+
+    message = "message" // achar(10)
+    size_res = posix_write(2, c_loc(message), 8_c_size_t)
     print *, "posix_write", size_res
 
-    buf = "message" // achar(10) // char(0)
-    size_res = posix_strlen(c_loc(buf))
+    message = "message" // achar(10) // char(0)
+    size_res = posix_strlen(c_loc(message))
     print *, "posix_strlen", size_res
   end block
 end program main
