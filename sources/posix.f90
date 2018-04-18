@@ -77,6 +77,13 @@ module posix
        integer(c_int) posix_mkdir
      end function posix_mkdir
 
+     function posix_mkdtemp(template) &
+          bind(c, name="mkdtemp")
+       use iso_c_binding, only: c_ptr
+       type(c_ptr), value :: template
+       type(c_ptr) posix_mkdtemp
+     end function posix_mkdtemp
+
      subroutine posix_perror(string) &
           bind(c, name="perror")
        use iso_c_binding, only: c_ptr
