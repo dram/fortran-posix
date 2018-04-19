@@ -6,6 +6,7 @@ module posix
   include "constants.f90"
 
   !! FIXME: Not quite portable.
+  type(c_ptr), bind(c, name="__environ") :: posix_environ
   type(c_ptr), bind(c, name="__stderrp") :: posix_stderr
   type(c_ptr), bind(c, name="__stdinp") :: posix_stdin
   type(c_ptr), bind(c, name="__stdoutp") :: posix_stdout
@@ -103,6 +104,13 @@ module posix
        integer(c_int) posix_rmdir
      end function posix_rmdir
 
+     function posix_spawnp(pid, file, file_actions, attrp, argv, envp) &
+          bind(c, name="posix_spawnp")
+       use iso_c_binding, only: c_int, c_ptr
+       type(c_ptr), value :: pid, file, file_actions, attrp, argv, envp
+       integer(c_int) posix_spawnp
+     end function posix_spawnp
+
      pure function posix_strlen(s) &
           bind(c, name="strlen")
        use iso_c_binding, only: c_size_t, c_ptr
@@ -116,6 +124,14 @@ module posix
        type(c_ptr), value :: path
        integer(c_int) posix_unlink
      end function posix_unlink
+
+     function posix_waitpid(pid, stat_loc, options) &
+          bind(c, name="waitpid")
+       use iso_c_binding, only: c_int, c_ptr
+       integer(c_int), value :: pid, options
+       type(c_ptr), value :: stat_loc
+       integer(c_int) posix_waitpid
+     end function posix_waitpid
 
      function posix_write(fd, buf, count) &
           bind(c, name="write")
