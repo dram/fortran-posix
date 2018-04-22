@@ -1,11 +1,12 @@
+#include <stdio.h>
 #include <unistd.h>
 
-#include <stdio.h>
+#define INT_PARAMETER "integer(c_int), parameter :: "
 
 int main(void)
 {
-	printf("integer(c_int) :: posix_f_ok = %d\n", F_OK);
-	printf("integer(c_int) :: posix_seek_end = %d\n", SEEK_END);
+	printf(INT_PARAMETER "posix_f_ok = %d\n", F_OK);
+	printf(INT_PARAMETER "posix_seek_end = %d\n", SEEK_END);
 
 	return 0;
 }
