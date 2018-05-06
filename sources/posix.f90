@@ -1,9 +1,9 @@
 module posix
-  use iso_c_binding, only: c_int
+  use iso_c_binding, only: c_int, c_ptr
 
   implicit none
 
-  private c_int
+  private c_int, c_ptr
 
   include "constants.f90"
 
