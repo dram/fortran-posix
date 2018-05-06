@@ -1,7 +1,9 @@
 module posix
-  use iso_c_binding
+  use iso_c_binding, only: c_int
 
   implicit none
+
+  private c_int
 
   include "constants.f90"
 
@@ -19,6 +21,13 @@ module posix
        integer(c_int), value :: mode
        integer(c_int) posix_access
      end function posix_access
+
+     function posix_close(fildes) &
+          bind(c, name="close")
+       use iso_c_binding, only: c_int
+       integer(c_int), value :: fildes
+       integer(c_int) posix_close
+     end function posix_close
 
      function posix_fclose(stream) &
           bind(c, name="fclose")
