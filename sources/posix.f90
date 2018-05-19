@@ -100,6 +100,15 @@ module posix
        type(c_ptr), value :: string
      end subroutine posix_perror
 
+     function posix_read(fildes, buf, nbyte) &
+          bind(c, name="read")
+       use iso_c_binding, only: c_int, c_size_t, c_ptr
+       integer(c_int), value :: fildes
+       type(c_ptr), value :: buf
+       integer(c_size_t), value :: nbyte
+       integer(c_size_t) posix_read
+     end function posix_read
+
      subroutine posix_rewind(stream) &
           bind(c, name="rewind")
        use iso_c_binding, only: c_ptr
