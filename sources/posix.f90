@@ -129,6 +129,13 @@ module posix
        integer(c_int) posix_spawnp
      end function posix_spawnp
 
+     pure function posix_strcmp(s1, s2) &
+          bind(c, name="strcmp")
+       use iso_c_binding, only: c_int, c_ptr
+       type(c_ptr), value :: s1, s2
+       integer(c_int) posix_strcmp
+     end function posix_strcmp
+
      pure function posix_strlen(s) &
           bind(c, name="strlen")
        use iso_c_binding, only: c_size_t, c_ptr
